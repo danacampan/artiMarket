@@ -1,8 +1,7 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Lobster', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -12,16 +11,24 @@ body {
 main {
   flex: 1;
 }
+.btn-primary {
+  background-color: #d47337;
+  border-color: #d47338;
+}
 
 header {
   background-color: #d47337;
   padding: 1rem;
+  font-family: 'Lobster';
+}
+h1 {
+  font-family: 'Lobster';
 }
 
-header .Navbar.Brand {
-  color: #fff;
-  font-weight: bolder;
+.brand {
   text-decoration: none;
+  color: #fff;
+  font-size: 25px;
 }
 
 .products {
@@ -32,12 +39,19 @@ header .Navbar.Brand {
 .product {
   border: 1px #404040 solid;
   margin: 1rem;
+  border-radius: 15px;
 }
-.product img {
-  width: 350px;
-  height: 320px;
+.rating span {
+  color: #ffc000;
+}
+img {
+  width: 380px;
+  height: 300px;
   max-width: 400px;
 }
 .product-info {
   padding: 1rem;
+}
+.img-large {
+  max-width: 100%;
 }

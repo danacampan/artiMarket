@@ -1,7 +1,7 @@
 const data = {
   products: [
     {
-      name: 'Cana pictata manual',
+      name: 'Cană pictată manual',
       slug: 'cana-pictata-manual',
       category: 'Ustensile bucatarie',
       image: './images/p1.jpg',
@@ -10,15 +10,15 @@ const data = {
       commercializer: 'ObiectePictate',
       rating: 4.0,
       numReviews: 5,
-      description: 'Cana pictata manual cu modele deosebite',
+      description: 'Cană pictata manual cu modele deosebite',
     },
     {
-      name: 'Covor albastru deschis',
+      name: 'Covor albastru brodat',
       slug: 'covor-albastru-deschis',
-      category: 'Decoratiuni de casa',
-      image: './images/p2.jpg',
+      category: 'Decoratiuni pentru casa',
+      image: './images/p8-rug.jpg',
       price: 100,
-      countInStock: 10,
+      countInStock: 0,
       commercializer: 'Atelierul Oanei',
       rating: 4.5,
       numReviews: 20,
@@ -39,7 +39,7 @@ const data = {
         'Cercei eleganti cu perle din aur, perfecti pentru orice ocazie',
     },
     {
-      name: 'Lănțișor din aur cu pandantiv roșu',
+      name: 'Lănțișor cu pandantiv roșu',
       slug: 'lantisor-cu-pandantiv',
       category: 'Bijuterii',
       image: './images/p4.jpg',
