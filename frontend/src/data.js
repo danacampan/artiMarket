@@ -1,7 +1,7 @@
 const data = {
   products: [
     {
-      _id: '1',
+      //_id: '1',
       name: 'Cană pictată manual',
       slug: 'cana-pictata-manual',
       category: 'Ustensile bucatarie',
@@ -14,7 +14,7 @@ const data = {
       description: 'Cană pictata manual cu modele deosebite',
     },
     {
-      _id: '2',
+      //_id: '2',
       name: 'Covor albastru brodat',
       slug: 'covor-albastru-deschis',
       category: 'Decoratiuni pentru casa',
@@ -28,7 +28,7 @@ const data = {
         'Covor albastru deschis, cu un model inspirat din stilul rustic',
     },
     {
-      _id: '3',
+      //_id: '3',
       name: 'Cercei cu perle',
       slug: 'cercei-cu-perle',
       category: 'Bijuterii',
@@ -42,7 +42,7 @@ const data = {
         'Cercei eleganti cu perle din aur, perfecti pentru orice ocazie',
     },
     {
-      _id: '4',
+      //_id: '4',
       name: 'Lănțișor cu pandantiv roșu',
       slug: 'lantisor-cu-pandantiv',
       category: 'Bijuterii',
