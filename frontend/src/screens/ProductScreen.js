@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { useEffect, useReducer } from 'react';
+import { useContext, useEffect, useReducer } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Rating from '../components/Rating';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
@@ -12,6 +12,7 @@ import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { getError } from '../utils';
+import { Store } from '../Store';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -28,6 +29,7 @@ const reducer = (state, action) => {
 };
 
 function ProductScreen() {
+  const navigate = useNavigate();
   const params = useParams();
   const { slug } = params;
 
@@ -49,6 +51,23 @@ function ProductScreen() {
     };
     fetchData();
   }, [slug]);
+
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart } = state;
+  const addToCartHandler = async () => {
+    const existItem = cart.cartItems.find((x) => x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/product/${product._id}`);
+    if (data.countInStock < quantity) {
+      window.alert('Ne pare rău, produsul nu mai este în stoc');
+      return;
+    }
+    ctxDispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...product, quantity },
+    });
+    navigate('/cart');
+  };
 
   return loading ? (
     <LoadingBox />
@@ -100,9 +119,9 @@ function ProductScreen() {
                     <Col>Status:</Col>
                     <Col>
                       {product.countInStock > 0 ? (
-                        <Badge bg="success">In stoc</Badge>
+                        <Badge bg="success">În stoc</Badge>
                       ) : (
-                        <Badge bg="danger">Nevalabil</Badge>
+                        <Badge bg="danger">Nu e în stoc</Badge>
                       )}
                     </Col>
                   </Row>
@@ -111,7 +130,9 @@ function ProductScreen() {
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
                     <div className="d-grid">
-                      <Button variant="primary">Adaugă in cos</Button>
+                      <Button onClick={addToCartHandler} variant="primary">
+                        Adaugă în coș
+                      </Button>
                     </div>
                   </ListGroup.Item>
                 )}
