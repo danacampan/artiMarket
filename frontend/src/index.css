@@ -11,7 +11,8 @@ body {
 main {
   flex: 1;
 }
-.btn-primary {
+.btn-primary,
+.btn-outline-primary {
   background-color: #d47337;
   border-color: #d47338;
 }
@@ -75,4 +76,40 @@ img {
 .checkout-steps > div.active {
   border-bottom: 0.2rem solid #f08000;
   color: #f08000;
+}
+.navbar-brand {
+  font-size: larger;
+}
+.side-navbar {
+  width: 240px;
+  height: 100%;
+  position: absolute;
+  left: -300px;
+  background-color: #030301;
+  transition: 0.5s;
+  color: #404040;
+  font-family: 'Lobster';
+}
+
+.site-container {
+  transition: 0.4s;
+}
+.active-cont {
+  margin-left: 240px;
+}
+.active-nav {
+  left: 0;
+}
+#button-search {
+  background-color: #fff;
+  color: #030301;
+}
+.card-title {
+  text-decoration: none;
+}
+.text-bold {
+  font-weight: bold;
+}
+.nav-links {
+  text-decoration: none;
 }

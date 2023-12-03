@@ -52,7 +52,7 @@ export default function ShippingAddressScreen() {
   return (
     <div>
       <Helmet>
-        <title>Shipping Address</title>
+        <title>Adresă de livrare</title>
       </Helmet>
 
       <CheckoutSteps step1 step2></CheckoutSteps>
