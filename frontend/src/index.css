@@ -16,6 +16,10 @@ main {
   background-color: #d47337;
   border-color: #d47338;
 }
+.btn-primary:hover {
+  background-color: #b65c25;
+  border-color: #b65c25;
+}
 
 header {
   background-color: #d47337;
@@ -41,6 +45,7 @@ h1 {
   border: 1px #404040 solid;
   margin: 1rem;
   border-radius: 15px;
+  padding: 10px;
 }
 .rating span {
   color: #ffc000;
@@ -103,6 +108,7 @@ img {
 #button-search {
   background-color: #fff;
   color: #030301;
+  border-color: #f08000;
 }
 .card-title {
   text-decoration: none;
@@ -112,4 +118,23 @@ img {
 }
 .nav-links {
   text-decoration: none;
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  width: 100px;
+  padding: 2rem;
+}
+.category-link {
+  color: #030301;
+  font-size: 18px;
+}
+.category-link:hover {
+  color: #404040;
+  font-size: 18px;
+}
+strong {
+  font-size: 24px;
 }

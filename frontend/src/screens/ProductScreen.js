@@ -43,7 +43,7 @@ function ProductScreen() {
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
-  const [selectedImage, setSelectedImage] = useState('');
+  //const [selectedImage, setSelectedImage] = useState('');
 
   const navigate = useNavigate();
   const params = useParams();
@@ -70,6 +70,7 @@ function ProductScreen() {
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
+  //verificare stoc si adaugare la cos
   const addToCartHandler = async () => {
     const existItem = cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
@@ -127,7 +128,7 @@ function ProductScreen() {
         <Col md={6}>
           <img
             className="img-large"
-            src={selectedImage || product.image}
+            src={product.image}
             alt={product.name}
           ></img>
         </Col>
@@ -149,6 +150,10 @@ function ProductScreen() {
             <ListGroup.Item>
               Descriere:
               <p>{product.description}</p>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Comerciant:
+              <p>{product.commercializer}</p>
             </ListGroup.Item>
           </ListGroup>
         </Col>
@@ -209,7 +214,7 @@ function ProductScreen() {
         <div className="my-3">
           {userInfo ? (
             <form onSubmit={submitHandler}>
-              <h2>Scrie o recenzie</h2>
+              <h2>Lasă o recenzie</h2>
               <Form.Group className="mb-3" controlId="rating">
                 <Form.Label>Rating</Form.Label>
                 <Form.Select
@@ -227,7 +232,7 @@ function ProductScreen() {
               </Form.Group>
               <FloatingLabel
                 controlId="floatingTextarea"
-                label="Comments"
+                label="Comentarii"
                 className="mb-3"
               >
                 <Form.Control
