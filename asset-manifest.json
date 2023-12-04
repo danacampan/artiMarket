@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/artiMarket/static/css/main.b237f4b1.css",
+    "main.js": "/artiMarket/static/js/main.d06613fe.js",
+    "static/js/787.9e9f4ffd.chunk.js": "/artiMarket/static/js/787.9e9f4ffd.chunk.js",
+    "index.html": "/artiMarket/index.html",
+    "main.b237f4b1.css.map": "/artiMarket/static/css/main.b237f4b1.css.map",
+    "main.d06613fe.js.map": "/artiMarket/static/js/main.d06613fe.js.map",
+    "787.9e9f4ffd.chunk.js.map": "/artiMarket/static/js/787.9e9f4ffd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b237f4b1.css",
+    "static/js/main.d06613fe.js"
+  ]
+}
