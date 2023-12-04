@@ -80,9 +80,7 @@ productRouter.post(
     const product = await Product.findById(productId);
     if (product) {
       if (product.reviews.find((x) => x.name === req.user.name)) {
-        return res
-          .status(400)
-          .send({ message: 'You already submitted a review' });
+        return res.status(400).send({ message: 'Deja ai lăsat o recenzie.' });
       }
 
       const review = {
@@ -92,6 +90,7 @@ productRouter.post(
       };
       product.reviews.push(review);
       product.numReviews = product.reviews.length;
+      //media recenziilor
       product.rating =
         product.reviews.reduce((a, c) => c.rating + a, 0) /
         product.reviews.length;

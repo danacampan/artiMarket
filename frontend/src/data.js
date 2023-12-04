@@ -22,8 +22,8 @@ const data = {
       price: 100,
       countInStock: 0,
       commercializer: 'Atelierul Oanei',
-      rating: 3.0,
-      numReviews: 20,
+      rating: 0.0,
+      numReviews: 0,
       description:
         'Covor albastru deschis, cu un model inspirat din stilul rustic',
     },
@@ -36,8 +36,8 @@ const data = {
       price: 70,
       countInStock: 30,
       commercializer: 'Bijuterii HandMade',
-      rating: 4.5,
-      numReviews: 10,
+      rating: 0.0,
+      numReviews: 0,
       description:
         'Cercei eleganti cu perle din aur, perfecti pentru orice ocazie',
     },
@@ -50,8 +50,8 @@ const data = {
       price: 120,
       countInStock: 20,
       commercializer: 'Teilor',
-      rating: 4.6,
-      numReviews: 5,
+      rating: 0.0,
+      numReviews: 0,
       description:
         'Lanțul elegant din aur este însoțit de un pandantiv distins în nuanțe vibrante de roșu, aducând o notă de rafinament și căldură la orice ținută.',
     },
