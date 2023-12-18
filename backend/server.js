@@ -27,17 +27,16 @@ app.use(express.urlencoded({ extended: true }));
 app.post('/api/send-email', async (req, res) => {
   const { to, subject, text } = req.body;
 
-  // Use nodemailer to send the email
   const transporter = nodemailer.createTransport({
-    service: 'gmail', // Use your email service (e.g., 'gmail', 'smtp.ethereal.email')
+    service: 'gmail',
     auth: {
-      user: 'artimarket67@gmail.com', // Your email address
-      pass: 'artimarket67./!', // Your email password
+      user: 'process.env.GMAIL_USER',
+      pass: 'process.env.GMAIL_PASSWORD',
     },
   });
 
   const mailOptions = {
-    from: 'campan.dana15@gmail.com', // Sender's email address
+    from: 'process.env.GMAIL_USER',
     to,
     subject,
     text,
@@ -81,7 +80,7 @@ app.use('/api/orders', orderRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  next(err); // Let the default Express error handler handle the error
+  next(err);
 });
 
 const port = process.env.PORT || 5000;

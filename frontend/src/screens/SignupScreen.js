@@ -41,8 +41,8 @@ export default function SignupScreen() {
 
       await Axios.post('/api/send-email', {
         recipient: email,
-        subject: 'Confirm Your Email',
-        text: `Please click the following link to confirm your email: ${data.confirmationTokenLink}`,
+        subject: 'Confirma email-ul',
+        text: `Te rog apasa pe urmatorul link pentru a-ti verifica email-ul: ${data.confirmationTokenLink}`,
       });
 
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
