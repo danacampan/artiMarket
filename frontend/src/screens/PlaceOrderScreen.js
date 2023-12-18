@@ -47,7 +47,6 @@ export default function PlaceOrderScreen() {
 
   const applyPromotionHandler = async () => {
     try {
-      console.log('User Token:', userInfo.token);
       console.log('Sending promo code:', promoCode);
       const { data } = await Axios.post(
         '/api/promotions/validate',
