@@ -19,9 +19,11 @@ export default function SignupScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -29,16 +31,30 @@ export default function SignupScreen() {
       return;
     }
     try {
+      setLoading(true);
+
       const { data } = await Axios.post('/api/users/signup', {
         name,
         email,
         password,
       });
+
+      await Axios.post('/api/send-email', {
+        recipient: email,
+        subject: 'Confirm Your Email',
+        text: `Please click the following link to confirm your email: ${data.confirmationTokenLink}`,
+      });
+
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
+      toast.success(
+        'Înregistrare reușită. Un email de confirmare a fost trimis.'
+      );
       navigate(redirect || '/');
     } catch (err) {
       toast.error(getError(err));
+    } finally {
+      setLoading(false);
     }
   };
 
