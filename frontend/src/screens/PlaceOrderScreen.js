@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
@@ -27,6 +27,7 @@ const reducer = (state, action) => {
 };
 
 export default function PlaceOrderScreen() {
+  const [promoCode, setPromoCode] = useState('');
   const navigate = useNavigate();
 
   const [{ loading }, dispatch] = useReducer(reducer, {
@@ -44,11 +45,53 @@ export default function PlaceOrderScreen() {
   cart.taxPrice = round2(0.015 * cart.itemsPrice);
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
+  const applyPromotionHandler = async () => {
+    try {
+      console.log('User Token:', userInfo.token);
+      console.log('Sending promo code:', promoCode);
+      const { data } = await Axios.post(
+        '/api/promotions/validate',
+        { promoCode },
+
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (data.success) {
+        toast.success('Promotion applied successfully!');
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(getError(error));
+    }
+  };
+
   const placeOrderHandler = async () => {
     try {
       dispatch({ type: 'CREATE_REQUEST' });
 
-      const { data } = await Axios.post(
+      const promoCodeValidation = await Axios.post(
+        '/api/promotions/validate',
+        { promoCode },
+        {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (promoCodeValidation.data.valid) {
+        cart.totalPrice -=
+          (cart.totalPrice * promoCodeValidation.data.promotion.discount) / 100;
+      }
+
+      const { data: orderData } = await Axios.post(
         '/api/orders',
         {
           orderItems: cart.cartItems,
@@ -65,10 +108,11 @@ export default function PlaceOrderScreen() {
           },
         }
       );
+
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE_SUCCESS' });
       localStorage.removeItem('cartItems');
-      navigate(`/order/${data.order._id}`);
+      navigate(`/order/${orderData.order._id}`);
     } catch (err) {
       dispatch({ type: 'CREATE_FAIL' });
       toast.error(getError(err));
@@ -161,6 +205,26 @@ export default function PlaceOrderScreen() {
                   <Row>
                     <Col>Taxe</Col>
                     <Col>{cart.taxPrice.toFixed(2)} lei</Col>
+                  </Row>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>
+                      <label htmlFor="promoCode">Cod promoțional:</label>
+                      <input
+                        type="text"
+                        id="promoCode"
+                        name="promoCode"
+                        value={promoCode}
+                        onChange={(e) => setPromoCode(e.target.value)}
+                      />
+                    </Col>
+                    <Button
+                      variant="outline-success"
+                      onClick={applyPromotionHandler}
+                    >
+                      Aplică
+                    </Button>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>

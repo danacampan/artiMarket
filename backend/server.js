@@ -7,6 +7,10 @@ import seedRouter from './routes/seedRouter.js';
 import productRouter from './routes/productRouter.js';
 import userRouter from './routes/userRouter.js';
 import orderRouter from './routes/orderRouter.js';
+import uploadRouter from './routes/uploadRouter.js';
+import seedPromotions from './promotionSeeder.js';
+import promotionRouter from './routes/promotionRouter.js';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -19,9 +23,11 @@ mongoose
     console.log(err.message);
   });
 
+seedPromotions();
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 app.post('/api/send-email', async (req, res) => {
@@ -73,10 +79,12 @@ app.get('/api/product/:id', (req, res) => {
   }
 });
  */
+app.use('/api/upload', uploadRouter);
 app.use('/api/seed', seedRouter);
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
+app.use('/api/promotions', promotionRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

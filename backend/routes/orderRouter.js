@@ -62,7 +62,7 @@ orderRouter.get(
   })
 );
 
-const transporter = nodemailer.createTransport({
+/* const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'process.env.GMAIL_USER',
@@ -79,7 +79,7 @@ const sendOrderConfirmationEmail = async (recipientEmail, orderId) => {
     to: recipientEmail,
     subject: 'Confirmarea comenzii',
     text: `Comanda cu ID-ul ${orderId} a fost plasată cu succes. Mulțumim pentru încredere!`,
-  };
+  }; 
 
   try {
     const info = await transporter.sendMail(mailOptions);
@@ -88,7 +88,7 @@ const sendOrderConfirmationEmail = async (recipientEmail, orderId) => {
     console.error('Error sending order confirmation email:', error);
     throw error;
   }
-};
+}; */
 
 orderRouter.post(
   '/',
@@ -104,7 +104,11 @@ orderRouter.post(
       totalPrice: req.body.totalPrice,
       user: req.user._id,
     });
-    try {
+    const order = await newOrder.save();
+    res.status(201).send({ message: 'New Order Created', order });
+  })
+);
+/*  try {
       const order = await newOrder.save();
       await sendOrderConfirmationEmail(req.user.email, order._id);
       res.status(201).send({ message: 'New Order Created', order });
@@ -112,7 +116,7 @@ orderRouter.post(
       console.error('Error creating order:', error);
     }
   })
-);
+); */
 
 // const order = await newOrder.save();
 
@@ -137,4 +141,36 @@ orderRouter.get(
     }
   })
 );
+
+orderRouter.put(
+  '/:id/deliver',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      order.isDelivered = true;
+      order.deliveredAt = Date.now();
+      await order.save();
+      res.send({ message: 'Comanda livrata' });
+    } else {
+      res.status(404).send({ message: 'Comanda negasita' });
+    }
+  })
+);
+
+orderRouter.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      await order.deleteOne();
+      res.send({ message: 'Order Deleted' });
+    } else {
+      res.status(404).send({ message: 'Order Not Found' });
+    }
+  })
+);
+
 export default orderRouter;
