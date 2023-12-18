@@ -38,8 +38,8 @@ const data = {
       price: 100,
       countInStock: 0,
       commercializer: 'Atelierul Oanei',
-      rating: 0.0,
-      numReviews: 0,
+      rating: 3.0,
+      numReviews: 20,
       description:
         'Covor albastru deschis, cu un model inspirat din stilul rustic',
     },
@@ -52,8 +52,8 @@ const data = {
       price: 70,
       countInStock: 30,
       commercializer: 'Bijuterii HandMade',
-      rating: 0.0,
-      numReviews: 0,
+      rating: 4.5,
+      numReviews: 10,
       description:
         'Cercei eleganti cu perle din aur, perfecti pentru orice ocazie',
     },

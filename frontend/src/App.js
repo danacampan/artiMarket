@@ -117,11 +117,11 @@ function App() {
         <div
           className={
             sidebarIsOpen
-              ? 'active-nav bg-light side-navbar d-flex justify-content-between flex-wrap flex-column'
+              ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
               : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
           }
         >
-          <Nav className="flex-column bg-light w-100 p-2">
+          <Nav className="flex-column text-white w-100 p-2">
             <Nav.Item>
               <strong>Categorii</strong>
             </Nav.Item>
@@ -131,7 +131,7 @@ function App() {
                   to={`/search/category=${category}`}
                   onClick={() => setSidebarIsOpen(false)}
                 >
-                  <Nav.Link className="category-link">{category}</Nav.Link>
+                  <Nav.Link>{category}</Nav.Link>
                 </LinkContainer>
               </Nav.Item>
             ))}
@@ -161,6 +161,9 @@ function App() {
             </Routes>
           </Container>
         </main>
+        <footer>
+          <div className="text-center">All rights reserved</div>
+        </footer>
       </div>
     </BrowserRouter>
   );
