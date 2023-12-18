@@ -156,8 +156,9 @@ export default function SearchScreen() {
               ))}
             </ul>
           </div>
+
+          <h3>Preț</h3>
           <div className="nav-links">
-            <h3>Preț</h3>
             <ul>
               <li>
                 <Link
@@ -241,7 +242,7 @@ export default function SearchScreen() {
                   >
                     <option value="newest">Cele mai noi</option>
                     <option value="lowest">Preț: crescător</option>
-                    <option value="highest">Price: descrescător</option>
+                    <option value="highest">Preț: descrescător</option>
                     <option value="toprated">Media recenziilor</option>
                   </select>
                 </Col>
