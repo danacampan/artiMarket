@@ -44,7 +44,19 @@ export default function OrderScreen() {
 
   const params = useParams();
   const { id: orderId } = params;
+  const { payment } = params;
+  const { shippingAddress, orderItems } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    try {
+      const orderItemsObject = JSON.parse(orderItems);
+      console.log('Parsed Order Items:', orderItemsObject);
+      // Now you can use orderItemsObject in your component logic
+    } catch (error) {
+      console.error('Error parsing orderItems:', error);
+    }
+  }, [orderItems]);
 
   const [
     { loading, error, order, successPay, loadingDeliver, successDeliver },

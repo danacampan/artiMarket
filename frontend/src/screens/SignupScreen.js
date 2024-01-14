@@ -39,18 +39,18 @@ export default function SignupScreen() {
         password,
       });
 
-      await Axios.post('/api/send-email', {
+      /* await Axios.post('/api/send-email', {
         recipient: email,
         subject: 'Confirma email-ul',
         text: `Te rog apasa pe urmatorul link pentru a-ti verifica email-ul: ${data.confirmationTokenLink}`,
-      });
+      });*/
 
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
       toast.success(
         'Înregistrare reușită. Un email de confirmare a fost trimis.'
       );
-      navigate(redirect || '/');
+      //navigate(redirect || '/');
     } catch (err) {
       toast.error(getError(err));
     } finally {
@@ -58,11 +58,11 @@ export default function SignupScreen() {
     }
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (userInfo) {
       navigate(redirect);
     }
-  }, [navigate, redirect, userInfo]);
+  }, [navigate, redirect, userInfo]); */
 
   return (
     <Container className="small-container">

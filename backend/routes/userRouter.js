@@ -50,17 +50,6 @@ userRouter.put(
   })
 );
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'process.env.GMAIL_USER',
-    pass: 'process.env.GMAIL_PASSWORD',
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
-
 userRouter.delete(
   '/:id',
   isAuth,
@@ -79,6 +68,17 @@ userRouter.delete(
     }
   })
 );
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'artimarket67@gmail.com',
+    pass: 'oesa xvxz zvao nsch',
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
 
 userRouter.post(
   '/signin',
@@ -132,7 +132,7 @@ userRouter.post(
         from: 'artimarket67@gmail.com',
         to: savedUser.email,
         subject: 'Confirmă înregistrarea',
-        text: `Dă click pe următorul link pentru a-ți verifica emailul: <a href="${confirmationLink}"></a>`,
+        text: `Dă click pe următorul link pentru a-ți verifica emailul: ${confirmationLink}`,
       };
 
       transporter.sendMail(mailOptions, (error, info) => {

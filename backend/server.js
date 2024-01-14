@@ -31,19 +31,22 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 app.post('/api/send-email', async (req, res) => {
-  const { to, subject, text } = req.body;
+  const { to = 'campan.dana15@gmail.com', subject, text } = req.body;
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'process.env.GMAIL_USER',
-      pass: 'process.env.GMAIL_PASSWORD',
+      user: 'artimarket67@gmail.com',
+      pass: 'oesa xvxz zvao nsch',
+    },
+    tls: {
+      rejectUnauthorized: false,
     },
   });
 
   const mailOptions = {
-    from: 'process.env.GMAIL_USER',
-    to,
+    from: process.env.GMAIL_USER,
+    to: to,
     subject,
     text,
   };
@@ -58,27 +61,6 @@ app.post('/api/send-email', async (req, res) => {
   }
 });
 
-/* app.get('/api/products', (req, res) => {
-  res.send(data.products);
-});
-
-app.get('/api/products/slug/:slug', (req, res) => {
-  const product = data.products.find((x) => x.slug === req.params.slug);
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: 'Product Not Found' });
-  }
-});
-app.get('/api/product/:id', (req, res) => {
-  const product = data.products.find((x) => x._id === req.params.id);
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: 'Product Not Found' });
-  }
-});
- */
 app.use('/api/upload', uploadRouter);
 app.use('/api/seed', seedRouter);
 app.use('/api/products', productRouter);

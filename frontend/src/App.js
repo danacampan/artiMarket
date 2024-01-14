@@ -177,7 +177,10 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="/placeorder" element={<PlaceOrderScreen />} />
+              <Route
+                path="/placeorder/:shippingAddress/:orderItems"
+                element={<PlaceOrderScreen />}
+              />
               <Route
                 path="/order/:id"
                 element={

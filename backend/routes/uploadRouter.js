@@ -3,6 +3,8 @@ import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
 import streamifier from 'streamifier';
 import { isAdmin, isAuth } from '../utils.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const upload = multer();
 
@@ -15,8 +17,8 @@ uploadRouter.post(
   upload.single('file'),
   async (req, res) => {
     cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
+      cloud_name: 'df9hlu1xt',
+      api_key: '68271636738445',
       api_secret: process.env.CLOUDINARY_API_SECRET,
     });
     const streamUpload = (req) => {

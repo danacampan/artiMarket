@@ -16,6 +16,16 @@ main {
   background-color: #d47337;
   border-color: #d47338;
 }
+.btn-primary:hover,
+.btn-outline-primary:hover {
+  background-color: #c45d1d;
+  border-color: #c45d1d;
+}
+.btn-primary.active,
+.btn-outline-primary.active {
+  background-color: #c45d1d;
+  border-color: #c45d1d;
+}
 
 header {
   background-color: #d47337;

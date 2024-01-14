@@ -62,33 +62,46 @@ orderRouter.get(
   })
 );
 
-/* const transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'process.env.GMAIL_USER',
-    pass: 'process.env.GMAIL_PASSWORD',
+    user: 'artimarket67@gmail.com',
+    pass: 'oesa xvxz zvao nsch',
   },
   tls: {
     rejectUnauthorized: false,
   },
 });
 
-const sendOrderConfirmationEmail = async (recipientEmail, orderId) => {
+const sendOrderConfirmationEmail = async (
+  recipientEmail = 'campan.dana15@gmail.com',
+  orderId,
+  payment,
+  shippingAddress,
+  orderItemsObject
+) => {
   const mailOptions = {
-    from: 'process.env.GMAIL_USER',
+    from: 'artimarket67@gmail.com',
     to: recipientEmail,
     subject: 'Confirmarea comenzii',
-    text: `Comanda cu ID-ul ${orderId} a fost plasată cu succes. Mulțumim pentru încredere!`,
-  }; 
+    text: `Comanda cu ID-ul ${orderId} a fost plasată cu succes. Pentru a verifica statusul comenzii tale, te rugăm să te autentifici în secțiunea Comenzile mele.
+    Mulțumim pentru încredere!
+    
+    În continuare îți prezentăm detaliile comenzii tale:
+    Metoda de plată: ${payment}
+    Adresa de expediere: ${shippingAddress} 
+    Produse: ${orderItemsObject}`,
+  };
 
   try {
     const info = await transporter.sendMail(mailOptions);
     console.log('Email sent:', info.response);
+    return info;
   } catch (error) {
     console.error('Error sending order confirmation email:', error);
-    throw error;
+    throw new Error('Error sending order confirmation email');
   }
-}; */
+};
 
 orderRouter.post(
   '/',
@@ -104,21 +117,24 @@ orderRouter.post(
       totalPrice: req.body.totalPrice,
       user: req.user._id,
     });
-    const order = await newOrder.save();
-    res.status(201).send({ message: 'New Order Created', order });
-  })
-);
-/*  try {
+    //const order = await newOrder.save();
+    //res.status(201).send({ message: 'New Order Created', order });
+
+    try {
       const order = await newOrder.save();
-      await sendOrderConfirmationEmail(req.user.email, order._id);
+      await sendOrderConfirmationEmail(
+        req.user.email,
+        order._id,
+        order.paymentMethod
+      );
+      //console.log('Order confirmation email sent successfully');
       res.status(201).send({ message: 'New Order Created', order });
     } catch (error) {
       console.error('Error creating order:', error);
+      res.status(500).send({ message: 'Error creating order' });
     }
   })
-); */
-
-// const order = await newOrder.save();
+);
 
 orderRouter.get(
   '/mine',

@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
@@ -29,6 +29,18 @@ const reducer = (state, action) => {
 export default function PlaceOrderScreen() {
   const [promoCode, setPromoCode] = useState('');
   const navigate = useNavigate();
+
+  const { shippingAddress, orderItems } = useParams();
+
+  useEffect(() => {
+    try {
+      const orderItemsObject = JSON.parse(orderItems);
+      console.log('Parsed Order Items:', orderItemsObject);
+      // Now you can use orderItemsObject in your component logic
+    } catch (error) {
+      console.error('Error parsing orderItems:', error);
+    }
+  }, [orderItems]);
 
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
@@ -107,10 +119,20 @@ export default function PlaceOrderScreen() {
           },
         }
       );
+      const emailData = {
+        recipient: userInfo.emailData,
+        /*subject: 'Order Confirmation',
+        text: `Thank you for placing your order.`, */
+      };
+
+      await Axios.post('/api/send-email', emailData);
 
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE_SUCCESS' });
       localStorage.removeItem('cartItems');
+      toast.success(
+        'Comanda a fost plasata cu succes. Un email de confirmare a fost trimis.'
+      );
       navigate(`/order/${orderData.order._id}`);
     } catch (err) {
       dispatch({ type: 'CREATE_FAIL' });
