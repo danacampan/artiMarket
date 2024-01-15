@@ -97,3 +97,11 @@ export const payOrderEmailTemplate = (order) => {
   </p>
   `;
 };
+export const deliverOrderEmailTemplate = (order) => {
+  return `
+    <h1>Comandă livrată</h1>
+    <p>Comanda cu id-ul ${order._id} a fost livrată cu succes!</p>
+    <p>Data livrării: ${new Date(order.deliveredAt).toLocaleString()}</p>
+    <p>Mulțumim că ne-ați ales serviciile!</p>
+  `;
+};

@@ -3,7 +3,12 @@ import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
 import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
-import { isAuth, isAdmin, payOrderEmailTemplate } from '../utils.js';
+import {
+  isAuth,
+  isAdmin,
+  payOrderEmailTemplate,
+  deliverOrderEmailTemplate,
+} from '../utils.js';
 import nodemailer from 'nodemailer';
 
 const orderRouter = express.Router();
@@ -74,22 +79,17 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendOrderConfirmationEmail = async (
-  recipientEmail = 'campan.dana15@gmail.com',
+  recipientEmail = ['campan.dana15@gmail.com', 'maria.campan03@e-uvt.ro'],
   orderId,
   payment,
   order,
-  user
+  emailTemplateFunction
 ) => {
   const mailOptions = {
     from: 'artimarket67@gmail.com',
-    to: recipientEmail,
-    subject: 'Confirmarea comenzii',
-    /* text: `Comanda cu ID-ul ${orderId} a fost plasată cu succes. Pentru a verifica statusul comenzii tale, te rugăm să te autentifici în secțiunea Comenzile mele.
-    Mulțumim pentru încredere!
-    
-    În continuare îți prezentăm detaliile comenzii tale:
-    Metoda de plată: ${payment}`, */
-    html: payOrderEmailTemplate(order),
+    to: recipientEmail.join(', '),
+    subject: 'Informatii comanda',
+    html: emailTemplateFunction(order),
   };
 
   try {
@@ -125,7 +125,8 @@ orderRouter.post(
         req.user.email,
         order._id,
         order.paymentMethod,
-        order
+        order,
+        payOrderEmailTemplate
       );
       //console.log('Order confirmation email sent successfully');
       res.status(201).send({ message: 'New Order Created', order });
@@ -167,6 +168,21 @@ orderRouter.put(
       order.isDelivered = true;
       order.deliveredAt = Date.now();
       await order.save();
+      try {
+        await sendOrderConfirmationEmail(
+          order.user.email,
+          order._id,
+          order.paymentMethod,
+          order,
+          deliverOrderEmailTemplate
+        );
+        console.log('Order confirmation email sent successfully for delivery.');
+      } catch (emailError) {
+        console.error(
+          'Error sending order confirmation email for delivery:',
+          emailError
+        );
+      }
       res.send({ message: 'Comanda livrata' });
     } else {
       res.status(404).send({ message: 'Comanda negasita' });

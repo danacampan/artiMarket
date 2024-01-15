@@ -57,7 +57,7 @@ userRouter.delete(
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
     if (user) {
-      if (user.email === 'admin@example.com') {
+      if (user.email === 'admin@gmail.com') {
         res.status(400).send({ message: 'Nu poti sterge contul adminului' });
         return;
       }

@@ -45,7 +45,7 @@ export default function SignupScreen() {
         text: `Te rog apasa pe urmatorul link pentru a-ti verifica email-ul: ${data.confirmationTokenLink}`,
       });*/
 
-      ctxDispatch({ type: 'USER_SIGNIN', payload: data });
+      //ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
       toast.success(
         'Înregistrare reușită. Un email de confirmare a fost trimis.'
