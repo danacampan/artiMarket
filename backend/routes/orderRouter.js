@@ -3,7 +3,7 @@ import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
 import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
-import { isAuth, isAdmin } from '../utils.js';
+import { isAuth, isAdmin, payOrderEmailTemplate } from '../utils.js';
 import nodemailer from 'nodemailer';
 
 const orderRouter = express.Router();
@@ -77,20 +77,19 @@ const sendOrderConfirmationEmail = async (
   recipientEmail = 'campan.dana15@gmail.com',
   orderId,
   payment,
-  shippingAddress,
-  orderItemsObject
+  order,
+  user
 ) => {
   const mailOptions = {
     from: 'artimarket67@gmail.com',
     to: recipientEmail,
     subject: 'Confirmarea comenzii',
-    text: `Comanda cu ID-ul ${orderId} a fost plasată cu succes. Pentru a verifica statusul comenzii tale, te rugăm să te autentifici în secțiunea Comenzile mele.
+    /* text: `Comanda cu ID-ul ${orderId} a fost plasată cu succes. Pentru a verifica statusul comenzii tale, te rugăm să te autentifici în secțiunea Comenzile mele.
     Mulțumim pentru încredere!
     
     În continuare îți prezentăm detaliile comenzii tale:
-    Metoda de plată: ${payment}
-    Adresa de expediere: ${shippingAddress} 
-    Produse: ${orderItemsObject}`,
+    Metoda de plată: ${payment}`, */
+    html: payOrderEmailTemplate(order),
   };
 
   try {
@@ -125,7 +124,8 @@ orderRouter.post(
       await sendOrderConfirmationEmail(
         req.user.email,
         order._id,
-        order.paymentMethod
+        order.paymentMethod,
+        order
       );
       //console.log('Order confirmation email sent successfully');
       res.status(201).send({ message: 'New Order Created', order });

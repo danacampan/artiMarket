@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
@@ -13,14 +13,37 @@ import { Store } from '../Store';
 import CheckoutSteps from '../components/CheckOutSteps';
 import LoadingBox from '../components/LoadingBox';
 
-const reducer = (state, action) => {
+const initialState = {
+  loading: false,
+  cart: {
+    orderItems: [],
+    itemsPrice: 0,
+    shippingPrice: 0,
+    taxPrice: 0,
+    totalPrice: 0,
+  },
+};
+
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'CREATE_REQUEST':
       return { ...state, loading: true };
     case 'CREATE_SUCCESS':
-      return { ...state, loading: false };
+      return { ...state, loading: false, cart: action.payload.cart };
     case 'CREATE_FAIL':
       return { ...state, loading: false };
+    case 'CART_APPLY_PROMO':
+      return {
+        ...state,
+        loading: false,
+        cart: {
+          ...state.cart,
+          totalPrice: state.cart
+            ? state.cart.itemsPrice - action.payload.discountAmount
+            : 0,
+        },
+      };
+
     default:
       return state;
   }
@@ -29,18 +52,6 @@ const reducer = (state, action) => {
 export default function PlaceOrderScreen() {
   const [promoCode, setPromoCode] = useState('');
   const navigate = useNavigate();
-
-  const { shippingAddress, orderItems } = useParams();
-
-  useEffect(() => {
-    try {
-      const orderItemsObject = JSON.parse(orderItems);
-      console.log('Parsed Order Items:', orderItemsObject);
-      // Now you can use orderItemsObject in your component logic
-    } catch (error) {
-      console.error('Error parsing orderItems:', error);
-    }
-  }, [orderItems]);
 
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
@@ -60,6 +71,7 @@ export default function PlaceOrderScreen() {
   const applyPromotionHandler = async () => {
     try {
       console.log('Sending promo code:', promoCode);
+      console.log('Cart before applying promo:', cart);
       const { data } = await Axios.post(
         '/api/promotions/validate',
         { promoCode },
@@ -71,21 +83,6 @@ export default function PlaceOrderScreen() {
           withCredentials: true,
         }
       );
-
-      if (data.success) {
-        toast.success('Promotion applied successfully!');
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error(getError(error));
-    }
-  };
-
-  const placeOrderHandler = async () => {
-    try {
-      dispatch({ type: 'CREATE_REQUEST' });
-
       const promoCodeValidation = await Axios.post(
         '/api/promotions/validate',
         { promoCode },
@@ -97,10 +94,32 @@ export default function PlaceOrderScreen() {
         }
       );
 
-      if (promoCodeValidation.data.valid) {
-        cart.totalPrice -=
-          (cart.totalPrice * promoCodeValidation.data.promotion.discount) / 100;
+      if (data.valid) {
+        const discountAmount =
+          (cart.totalPrice * data.promotion.discount) / 100;
+        console.log('Discount Amount:', discountAmount);
+
+        dispatch({
+          type: 'CART_APPLY_PROMO',
+          payload: {
+            discountAmount,
+          },
+        });
+        console.log('Cart after applying promo:', cart);
+        if (data.success) {
+          toast.success('Cod aplicat cu succes!');
+        } else {
+          toast.error(data.message);
+        }
       }
+    } catch (error) {
+      toast.error(getError(error));
+    }
+  };
+
+  const placeOrderHandler = async () => {
+    try {
+      dispatch({ type: 'CREATE_REQUEST' });
 
       const { data: orderData } = await Axios.post(
         '/api/orders',
@@ -128,7 +147,18 @@ export default function PlaceOrderScreen() {
       await Axios.post('/api/send-email', emailData);
 
       ctxDispatch({ type: 'CART_CLEAR' });
-      dispatch({ type: 'CREATE_SUCCESS' });
+      dispatch({
+        type: 'CREATE_SUCCESS',
+        payload: {
+          cart: {
+            orderItems: [],
+            itemsPrice: 0,
+            shippingPrice: 0,
+            taxPrice: 0,
+            totalPrice: 0,
+          },
+        },
+      });
       localStorage.removeItem('cartItems');
       toast.success(
         'Comanda a fost plasata cu succes. Un email de confirmare a fost trimis.'
@@ -254,7 +284,7 @@ export default function PlaceOrderScreen() {
                       <strong>Total comandă</strong>
                     </Col>
                     <Col>
-                      <strong>{cart.totalPrice.toFixed(2)} lei</strong>
+                      <strong>{state.cart.totalPrice.toFixed(2)} lei</strong>
                     </Col>
                   </Row>
                 </ListGroup.Item>
